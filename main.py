@@ -1,16 +1,21 @@
-import random 
-from Data import *
-from console import clear
+import os
+import random
+from data import *
 input_class = str()
 input_race = str()
 
+def clear():
+	if os.name == 'nt':
+		os.system('cls')
+	else:
+		os.system('clear')
 
 def ls(x):
 	return ', '.join(str(x) for x in x)
 
 def getRace():
 	clear()
-	user_input = str.title(input('Select a Race\n(' + ls(race_list) + ')\n\n[Enter] for random'))
+	user_input = str.title(input('Select a Race\n(' + ls(race_list) + ')\n\n[Enter] for random: '))
 	if len(user_input.split()) == 3:
 		input_race = user_input.split()[0] + ' ' + user_input.split()[1]
 		input_class = user_input.split()[2]
@@ -18,7 +23,7 @@ def getRace():
 		if 'Half ' in user_input:
 			input_race = user_input
 			clear()
-			user_input = str.title(input('Select a class\n(' + ls(class_list) + ')\n\n'))
+			user_input = str.title(input('Select a class: (' + ls(class_list) + ')\n\n: '))
 			input_class = user_input
 		else:
 			input_race = user_input.split()[0]
@@ -26,38 +31,38 @@ def getRace():
 	elif len(user_input.split()) == 1:
 		input_race = user_input
 		clear()
-		user_input = str.title(input('Select a class\n(' + ls(class_list) + ')\n\n'))
+		user_input = str.title(input('Select a class: (' + ls(class_list) + ')\n\n: '))
 		input_class = user_input
 	else:
 		input_race = random.choice(race_list)
 		input_class = random.choice(class_list)
 	return str((input_race + '.' + input_class))
-	
-		
+
+
 def generate(user_race, user_class):
 	user_skills = list()
 	user_feats = list()
 	user_domains = list()
 	user_forbidden_schools = list()
 	user_languages = ['Common']
-	user_data = dict()	
-	
+	user_data = dict()
+
 	def pb(skill):
 		return (skill - 10) // 2
-	
+
 	def addlang():
 		user_languages.append(random.choice(language_list))
 		while len(user_languages) != len(set(user_languages)):
 			del user_languages[-1]
 			user_languages.append(random.choice(language_list))
-			
-	
+
+
 	def addfeat():
 		user_feats.append(random.choice(feats))
 		while len(user_feats) != len(set(user_feats)):
 			del user_feats[-1]
 			user_feats.append(random.choice(feats))
-	
+
 	if user_race == 'Dwarf':
 		user_data['Name'] = random.choice(dwarf_first_names) + ' ' + random.choice(dwarf_last_names) + ', of the clan ' + random.choice(dwarf_clans)
 		if random.random() > 0.8:
@@ -73,7 +78,7 @@ def generate(user_race, user_class):
 		user_data['Hair Color'] = random.choice(['Black', 'Brown', 'Grey'])
 		user_data['Hair Type'] = random.choice(['Curly', 'Wavy', 'Straight'])
 		user_data['Eye Color'] = random.choice(['Brown', 'Black', 'Deep Grey'])
-		
+
 	if user_race == 'Elf':
 		user_data['Name'] = random.choice(elf_first_names) + ' ' + random.choice(elf_last_names)
 		if random.random() > 0.8:
@@ -89,7 +94,7 @@ def generate(user_race, user_class):
 		user_data['Hair Color'] = random.choice(['Black', 'Brown', 'Grey'])
 		user_data['Hair Type'] = random.choice(['Curly', 'Wavy', 'Straight'])
 		user_data['Eye Color'] = random.choice(['Light Green', 'Green', 'Dark Green', 'Green Grey'])
-		
+
 	if user_race == 'Halfling':
 		user_data['Name'] = random.choice(halfling_first_names) + ' ' + random.choice(halfling_last_names)
 		if random.random() > 0.7:
@@ -105,7 +110,7 @@ def generate(user_race, user_class):
 		user_data['Hair Color'] = 'Black'
 		user_data['Hair Type'] = 'Straight'
 		user_data['Eye Color'] = random.choice(['Brown', 'Black'])
-			
+
 	if user_race == 'Gnome':
 		user_data['Name'] = random.choice(gnome_first_name) + ' ' + random.choice(gnome_nick_names) + ' ' + random.choice(gnome_last_names) + ' of the clan ' + random.choice(gnome_clans)
 		if random.random() > 0.4:
@@ -121,7 +126,7 @@ def generate(user_race, user_class):
 		user_data['Hair Color'] = random.choice(['Blonde', 'White', 'Grey'])
 		user_data['Hair Type'] = random.choice(['Curly', 'Wavy', 'Straight'])
 		user_data['Eye Color'] = random.choice(['Light Blue', 'Blue', 'Dark Blue', 'Blue Grey'])
-		
+
 	if user_race == 'Half Elf':
 		user_data['Tribe'] = random.choice(human_tribes)
 		if random.random() > 0.5:
@@ -144,7 +149,7 @@ def generate(user_race, user_class):
 		user_data['Hair Color'] = random.choice(['Black', 'Brown', 'Blond', 'Red', 'White'])
 		user_data['Hair Type'] = random.choice(['Curly', 'Wavy', 'Straight'])
 		user_data['Eye Color'] = random.choice(['Amber', 'Blue', 'Brown', 'Grey', 'Green', 'Hazel'])
-		
+
 	if user_race == 'Half Orc':
 		user_data['Tribe'] = random.choice(human_tribes)
 		if random.random() > 0.5:
@@ -169,8 +174,8 @@ def generate(user_race, user_class):
 		user_data['Hair Color'] = random.choice(['Black', 'Brown', 'Blond', 'Red', 'White'])
 		user_data['Hair Type'] = random.choice(['Curly', 'Wavy', 'Straight'])
 		user_data['Eye Color'] = random.choice(['Amber', 'Blue', 'Brown', 'Grey', 'Green', 'Hazel'])
-		
-		
+
+
 	if user_race == 'Human':
 		user_data['Tribe'] = random.choice(human_tribes)
 		user_data['Age'] = random.randrange(18, 30)
@@ -183,17 +188,17 @@ def generate(user_race, user_class):
 		user_data['Hair Type'] = random.choice(['Curly', 'Wavy', 'Straight'])
 		user_data['Eye Color'] = random.choice(['Amber', 'Blue', 'Brown', 'Grey', 'Green', 'Hazel'])
 		addlang()
-		
+
 	user_data.setdefault('str', random.randrange(8, 18))
 	user_data.setdefault('dex', random.randrange(8, 18))
 	user_data.setdefault('con', random.randrange(8, 18))
 	user_data.setdefault('cha', random.randrange(8, 18))
 	user_data.setdefault('int', random.randrange(8, 18))
 	user_data.setdefault('wis', random.randrange(8, 18))
-	
+
 	skill_points = class_xp[user_class] + pb(user_data['int'])
 	user_data['Health'] = class_health[user_class] + pb(user_data['con'])
-	
+
 	if user_class == 'Barbarian':
 		user_data['Weapon'] = random.choice(melee_weapons)
 		user_data['Shield'] = random.choice(shields)
@@ -206,7 +211,7 @@ def generate(user_race, user_class):
 				if random.random() > 0.9:
 					user_data['Religion'] = 'Erythnul'
 		user_data['Gold'] = random.randrange(40, 160)
-	
+
 	if user_class == 'Bard':
 		user_data['Weapon'] = random.choice(['Whip', 'Long Sword', 'Rapier', 'Sap', 'Short Sword', 'Short Bow', 'Dagger', 'Gauntlet', 'Light Mace', 'Sickle', 'Club', 'Heavy Mace', 'Morningstar', 'Short Spear', 'Long Spear', 'Quarterstaff', 'Spear', 'Heavy Crossbow', 'Light Crossbow', 'Javelin', 'Sling'])
 		user_data['Shield'] = shields[random.randrange(0, 3)]
@@ -219,7 +224,7 @@ def generate(user_race, user_class):
 		elif random.random() > 0.5:
 			user_data['Religion'] = 'Corellon Larethian'
 		user_data['Gold'] = random.randrange(40, 160)
-		
+
 	if user_class == 'Cleric':
 		user_data['Religion'] = random.choice(religions)
 		x = religion_alignments[user_data['Religion']]
@@ -241,7 +246,7 @@ def generate(user_race, user_class):
 		if 'War' in user_domains:
 			user_feats.append('Weapon Focus')
 		user_data['Gold'] = random.randrange(50, 200)
-		
+
 	if user_class == 'Druid':
 		if random.random() > 0.5:
 			user_data['Shield'] = 'Light Wooden'
@@ -260,7 +265,7 @@ def generate(user_race, user_class):
 		user_languages.append('Sylvan')
 		user_data['Animal Companion'] = random.choice(['Badger', 'Camel', 'Dire Rat', 'Dog', 'Riding Dog', 'Eagle', 'Hawk', 'Light Horse', 'Heavy Horse', 'Owl', 'Pony', 'Small Snake', 'Medium Snake', 'Viper', 'Wolf'])
 		user_data['Gold'] = random.randrange(20, 80)
-		
+
 	if user_class == 'Fighter':
 		if random.random() > 0.5:
 			user_data['Weapon'] = random.choice(melee_weapons)
@@ -271,7 +276,7 @@ def generate(user_race, user_class):
 		user_data['Religion'] = random.choice(['Heironeous', 'Kord', 'St. Cuthbert', 'Hextor', 'Erythnul'])
 		user_data['Gold'] = random.randrange(60, 240)
 		addfeat()
-		
+
 	if user_class == 'Monk':
 		if random.random() > 0.9:
 			user_data['Armor'] = armor[random.randrange(0, 5)]
@@ -287,7 +292,7 @@ def generate(user_race, user_class):
 		user_feats.append('Improved Unarmed Strike')
 		user_feats.append(random.choice(['Improved Grapple', 'Stunning Fist']))
 		user_data['Gold'] = random.randrange(5, 20)
-		
+
 	if user_class == 'Paladin':
 		user_data['Armor'] = random.choice(armor)
 		user_data['Shield'] = random.choice(shields)
@@ -301,7 +306,7 @@ def generate(user_race, user_class):
 		elif random.random() > 0.6:
 			user_data['Religion'] = 'Pelor'
 		user_data['Gold'] = random.randrange(60, 240)
-		
+
 	if user_class == 'Ranger':
 		user_data['Armor'] = armor[random.randrange(0, 3)]
 		user_data['Shield'] = shields[random.randrange(0, 3)]
@@ -316,13 +321,13 @@ def generate(user_race, user_class):
 		elif random.random() > 0.6:
 			user_data['Religion'] = random.choice(religions)
 		user_data['Gold'] = random.randrange(60, 240)
-		
+
 	if user_class == 'Rogue':
 		user_data['Armor'] = armor[random.randrange(0, 3)]
 		user_data['Weapon'] = random.choice(['Hand Crossbow', 'Sap', 'Short Bow', 'Rapier', 'Short Sword', 'Club', 'Dagger', 'Javelin', 'Light Mace', 'Heavy Mace', 'Short Spear', 'Sickle', 'Spear', 'Spiked Gauntlet', 'Great Club', 'Morningstar', 'Quarterstaff', 'Scythe', 'Sling', 'Light Crossbow', 'Heavy Crossbow'])
 		user_data['Religion'] = random.choice(religions)
 		user_data['Gold'] = random.randrange(50, 200)
-		
+
 	if user_class == 'Sorcerer':
 		if random.random() > 0.5:
 			user_data['Weapon'] = random.choice(ranged_weapons)
@@ -335,7 +340,7 @@ def generate(user_race, user_class):
 				del user_data['Health']
 				user_data['Health'] = 7 + pb(user_data['con'])
 		user_data['Gold'] = random.randrange(30, 180)
-		
+
 	if user_class == 'Wizard':
 		user_data['Weapon'] = random.choice(['Club', 'Dagger', 'Heavy Crossbow', 'Light Crossbow', 'Quarterstaff'])
 		user_feats.append('Scribe Scroll')
@@ -365,13 +370,13 @@ def generate(user_race, user_class):
 				del user_forbidden_schools[-1]
 			user_forbidden_schools = random.sample(['Abjuration', 'Conjuration', 'Divination', 'Enchantment', 'Evocation', 'Illusion', 'Necromancy', 'Transmutation'], 1)
 		user_data['Gold'] = random.randrange(30, 120)
-		
+
 	if pb(user_data['int']) > 1:addlang()
-	
+
 	user_data.setdefault('Armor', 'None')
 	user_data.setdefault('Shield', 'None')
 	user_data.setdefault('Weapon', 'Unarmed')
-	
+
 	if skill_points < 1:
 		skill_points = 1
 	if user_race == 'Human':
@@ -392,25 +397,25 @@ def generate(user_race, user_class):
 		skill_points -= 1
 	if weapon_data[user_data['Weapon']]['Handed'] != 1:
 		user_data['Shield'] = 'None'
-	
+
 	user_skills += random.sample(skill_list[user_class], skill_points)
-	
+
 	user_feats.append(random.choice(feats))
 	while len(user_feats) != len(set(user_feats)):
 		del user_feats[-1]
 		user_feats.append(random.choice(feats))
-		
+
 	user_data.setdefault('Alignment', random.choice(alignment1) + random.choice(alignment2))
 	user_data.setdefault('School', '')
 	user_data.setdefault('ac', 10 + armor_data[user_data['Armor']]['Armor Bonus'] + armor_data[user_data['Shield']]['Armor Bonus'])
-	
+
 
 	if user_data['Alignment'] == 'Neutral Neutral':
 		del user_data['Alignment']
 		user_data['Alignment'] = 'True Neutral'
-			
+
 	user_data['af'] = armor_data[user_data['Armor']]['Arcane Spell Failure']
-	
+
 	clear()
 	print('Name: {}'.format(user_data['Name']))
 	print('Age: {} \n'.format(user_data['Age']))
@@ -422,19 +427,19 @@ def generate(user_race, user_class):
 	print('School: {}\nForbidden Schools: {}\n'.format(user_data['School'], ls(user_forbidden_schools))*int(len(user_data['School']) != 0), end='')
 	print('Domains: {}\n'.format(ls(user_domains))*int(len(user_domains) != 0), end='')
 	print('Weapon: {} ({} Handed | Damage: {}, {} | Critical Multiplier: {}x)'.format(user_data['Weapon'], weapon_data[user_data['Weapon']]['Handed'], weapon_data[user_data['Weapon']]['Damage (M)'], weapon_data[user_data['Weapon']]['Type'], weapon_data[user_data['Weapon']]['Critical']))
-	
+
 	print('Armor: {}'.format(user_data['Armor']))
 	print('Shield: {}'.format(user_data['Shield']))
 	print('Armor Class: {}\nArcane Spell Failure Chance: {}%'.format(user_data['ac'], user_data['af']))
 	print('\nHealth Points: {}\n'.format(user_data['Health']))
-	
+
 	print('Strength:     {0:02d} ({1:+d})'.format(user_data['str'], pb(user_data['str'])))
 	print('Dexterity:    {0:02d} ({1:+d})'.format(user_data['dex'], pb(user_data['dex'])))
 	print('Constitution: {0:02d} ({1:+d})'.format(user_data['con'], pb(user_data['con'])))
 	print('Intelligence: {0:02d} ({1:+d})'.format(user_data['int'], pb(user_data['int'])))
 	print('Wisdom:       {0:02d} ({1:+d})'.format(user_data['wis'], pb(user_data['wis'])))
-	print('Charisma:     {0:02d} ({1:+d})'.format(user_data['cha'], pb(user_data['cha'])))	
-	
+	print('Charisma:     {0:02d} ({1:+d})'.format(user_data['cha'], pb(user_data['cha'])))
+
 	print("\nSize: {}, Height: {}'{}, Weight: {} lbs.".format(str(user_data['Size']), user_data['Height'] // 12, user_data['Height'] % 12, user_data['Weight']))
 	print('Physical Descriptions: {} {} Hair, {} Skin, {} Eyes\n'.format(user_data['Hair Color'], user_data['Hair Type'], user_data['Skin Tone'], user_data['Eye Color']))
 	if 'Religion' in user_data:print('Religion: {}\n'.format(user_data['Religion']))
@@ -447,4 +452,3 @@ def generate(user_race, user_class):
 if __name__ == '__main__':
 	x = str.split(getRace(), '.')
 	generate(x[0], x[1])
-
